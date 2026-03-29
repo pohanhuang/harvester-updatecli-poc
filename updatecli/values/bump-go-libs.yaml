@@ -1,0 +1,25 @@
+name: "Bump third-party Go library dependencies"
+pipelineid: "golang/libs/autodiscovery"
+groupby: individual
+automerge: false
+
+labels:
+  - dependencies
+
+scm:
+  enabled: true
+  kind: github
+  env_token: GITHUB_TOKEN
+  user: "harvester-bot"
+  email: "harvester-bot@users.noreply.github.com"
+  owner: "pohanhuang"
+  repository: "harvester"
+  username: "harvester-bot"
+  branch: "master"
+
+spec:
+  only:
+    - modules:
+        "^github.com/onsi/ginkgo/v2": ""
+    - modules:
+        "^github.com/onsi/gomega": ""

@@ -1,0 +1,28 @@
+name: "Bump k8s stack Go dependencies"
+pipelineid: "golang/k8s-stack/autodiscovery"
+# groupby: all ensures all k8s modules are bumped together in a single PR
+# to keep k8s.io/* and sigs.k8s.io/* versions in sync
+groupby: all
+automerge: false
+
+labels:
+  - dependencies
+  - k8s
+
+scm:
+  enabled: true
+  kind: github
+  env_token: GITHUB_TOKEN
+  user: "harvester-bot"
+  email: "harvester-bot@users.noreply.github.com"
+  owner: "pohanhuang"
+  repository: "harvester"
+  username: "harvester-bot"
+  branch: "master"
+
+spec:
+  only:
+    - modules:
+        "^k8s.io/": ""
+    - modules:
+        "^sigs.k8s.io/": ""

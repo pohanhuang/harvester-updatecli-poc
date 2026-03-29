@@ -5,12 +5,13 @@ on:
   push:
     branches: [main]
     paths:
-      - "updatecli/updatecli.d/bump-go-k8s-stack.yaml"
+      - "updatecli/values/bump-go-k8s-stack.yaml"
   pull_request:
     branches: [main]
     paths:
-      - "updatecli/updatecli.d/bump-go-k8s-stack.yaml"
+      - "updatecli/values/bump-go-k8s-stack.yaml"
   schedule:
+    # Run every Monday at 08:00 UTC (k8s stack bumps are less frequent)
     - cron: "0 8 * * 1"
 
 jobs:
@@ -18,8 +19,8 @@ jobs:
     name: Bump k8s stack Go dependencies
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pull-requests: read
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -30,14 +31,17 @@ jobs:
       - name: Diff (dry-run on PR)
         if: github.ref != 'refs/heads/main'
         env:
-          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          UPDATECLI_GITHUB_USERNAME: ${{ github.repository_owner }}
-        run: updatecli diff --config updatecli/updatecli.d/bump-go-k8s-stack.yaml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          updatecli diff \
+            --values updatecli/values/bump-go-k8s-stack.yaml \
+            ghcr.io/updatecli/policies/golang/autodiscovery:0.12.0
 
       - name: Apply
         if: github.ref == 'refs/heads/main'
         env:
-          UPDATECLI_GITHUB_APP_CLIENT_ID: ${{ secrets.APP_ID }}
-          UPDATECLI_GITHUB_APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-          UPDATECLI_GITHUB_APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
-        run: updatecli apply --clean --config updatecli/updatecli.d/bump-go-k8s-stack.yaml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          updatecli apply \
+            --values updatecli/values/bump-go-k8s-stack.yaml \
+            ghcr.io/updatecli/policies/golang/autodiscovery:0.12.0
