@@ -18,8 +18,50 @@ scm:
   branch: "master"
 
 spec:
-  only:
+  ignore:
     - modules:
-        "^github.com/onsi/ginkgo/v2": ""
+        "^k8s.io/": ""
     - modules:
-        "^github.com/onsi/gomega": ""
+        "^sigs.k8s.io/": ""
+    - modules:
+        "^github.com/cisco-open/operator-tools$": ""
+    - modules:
+        "^github.com/containerd/containerd$": ""
+    - modules:
+        "^github.com/harvester/harvester-network-controller$": ""
+    - modules:
+        "^github.com/harvester/node-manager$": ""
+    - modules:
+        "^github.com/k3s-io/helm-controller$": ""
+    - modules:
+        "^github.com/k8snetworkplumbingwg/network-attachment-definition-client$": ""
+    - modules:
+        "^github.com/k8snetworkplumbingwg/whereabouts$": ""
+    - modules:
+        "^github.com/kube-logging/logging-operator($|/pkg/sdk$)": ""
+    - modules:
+        "^github.com/kubeovn/kube-ovn$": ""
+    - modules:
+        "^github.com/kubernetes-csi/external-snapshotter$": ""
+    - modules:
+        "^github.com/longhorn/": ""
+    - modules:
+        "^github.com/openshift/": ""
+    - modules:
+        "^github.com/prometheus-operator/prometheus-operator$": ""
+    - modules:
+        "^github.com/rancher/": ""
+    - modules:
+        "^github.com/rhobs/operator-observability-toolkit$": ""
+    - modules:
+        "^helm.sh/helm/v3$": ""
+    - modules:
+        "^kubevirt.io/": ""
+    - modules:
+        "^github.com/mcuadros/go-version$": ""
+    - modules:
+        "^github.com/ehazlett/simplelog$": ""
+    - modules:
+        "^github.com/harvester/go-common$": ""
+    - modules:
+        "^golang.org/x/exp$": ""
