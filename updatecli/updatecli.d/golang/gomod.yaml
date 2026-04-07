@@ -1,21 +1,21 @@
 name: Update golang versions
 pipelineid: "golang/versions"
 sources: 
-  gomod:
+  golang:
     name: "golang versions in go.mod"
     kind: golang
 
 targets:
-  gomod:
+  golang:
     kind: golang/gomod
-    name: 'update go mod files to {{ source "gomod" }}'
+    name: 'update go mod files to {{ source "golang" }}'
     scmid: github
-    sourceid: gomod
+    sourceid: golang
     spec:
       file: "go.mod"
 
 conditions:
-  gomod:
+  golang:
     name: "check if go.mod exist"
     kind: file
     scmid: github
@@ -27,23 +27,24 @@ scms:
   github:
     kind: githubsearch
     spec:
-      commitmessage:
-        type: "chore"
-        scope: "golang"
+      email: "{{ .github.email }}"
+      user: "{{ .github.user }}" 
       limit: 0
-      search: "repo:pohanhuang/harvester fork:true"
-      # search: "repo:harvester/harvester"
-      # search: "org:harvester is:public"
-      branch: "^master$"
-      # branch: '^master$|^v1\.8$|^v1\.7$'
+      search: "{{ .scm.search}}"
+      branch: "{{ .scm.branch }}"
+      commitmessage:
+        type: "{{ .scm.commitType }}"
+        scope: "{{ .scm.commitScope }}"
+        title: "update Golang version"
+        footers: "{{ .github.footer }}"
+        hidecredit: true   
 
 actions:
   github:
     kind: github/pullrequest
-    scmid: github 
+    scmid: github
     spec:
-      reviewers:
-        - harvester/dev
-      labels:
-        - dependencies
-
+      title: '{{ .actions.title }}'
+      description: 'Update Golang version to {{ source "golang" }} in go.mod files'
+      reviewers: {{ toYaml .actions.spec.reviewers | nindent 8 }}
+      labels: {{ toYaml .actions.spec.labels | nindent 8 }}

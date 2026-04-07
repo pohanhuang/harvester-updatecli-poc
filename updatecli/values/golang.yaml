@@ -1,0 +1,20 @@
+scm:
+  commitType: "chore"
+  commitScope: "golang"
+  search: "repo:pohanhuang/harvester fork:true"
+  branch: "^master$"
+
+github:
+  arthor: "harvester-bot"
+  owner: "pohanhuang" #TODO: change to harvester
+  user: "harvester-bot"
+  email: "harvester-bot@users.noreply.github.com"
+  footer: "Signed-off-by: harvester-bot <harvester-bot@users.noreply.github.com>"
+
+actions:
+  title: 'chore(golang): bump Go to {{ source "golang" }}'
+  spec:
+    reviewers:
+      - harvester/dev
+    labels:
+      - dependencies

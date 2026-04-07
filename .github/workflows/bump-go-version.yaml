@@ -23,17 +23,13 @@ jobs:
       - name: Diff (dry-run on PR)
         if: github.ref != 'refs/heads/main'
         env:
-          # GITHUB_TOKEN is scoped to this repo only (harvester-updatecli-poc).
-          # HARVESTER_TOKEN is a PAT with Contents+PRs write access to pohanhuang/harvester.
           GITHUB_TOKEN: ${{ secrets.HARVESTER_TOKEN }}
         run: |
-          updatecli diff \
-            --values updatecli/values/bump-go-libs.yaml \
-            ghcr.io/updatecli/policies/golang/autodiscovery:0.12.0
+          updatecli compose diff -f updatecli-compose/golang-update.yaml
 
       - name: Apply
         if: github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ secrets.HARVESTER_TOKEN }}
         run: |
-          updatecli compose apply -f updatecli-compose/golang-update.yaml -
+          updatecli compose apply -f updatecli-compose/golang-update.yaml

@@ -2,3 +2,5 @@ policies:
   - name: Bump golang versions
     config:
       - ../updatecli/updatecli.d/golang
+    values:
+      - ../updatecli/values/golang.yaml
