@@ -1,0 +1,55 @@
+name: Update golang versions
+pipelineid: "golang/versions"
+sources: 
+  golang:
+    kind: golang 
+    name: golang versions
+
+targets:
+  dockerfile:
+    name: 'update golang version in Dockerfile to {{ source "golang" }}'
+    kind: dockerfile
+    scmid: github
+    sourceid: golang
+    spec:
+      file: "Dockerfile.dapper"
+      instruction:
+        keyword: "FROM"
+        matcher: "golang"
+    transformers:
+      - addsuffix: "-bookworm"
+
+conditions:
+  docker:
+    kind: dockerimage
+    name: "check docker image tag"
+    sourceid: golang
+    spec:
+      image: golang
+    transformers:
+      - addsuffix: "-bookworm"
+
+scms:
+  github:
+    kind: githubsearch
+    spec:
+      commitmessage:
+        type: "chore"
+        scope: "golang"
+      limit: 0
+      search: "repo:pohanhuang/harvester fork:true"
+      # search: "repo:harvester/harvester"
+      # search: "org:harvester is:public"
+      branch: "^master$"
+      # branch: '^master$|^v1\.8$|^v1\.7$'
+
+actions:
+  github:
+    kind: github/pullrequest
+    scmid: github 
+    spec:
+      reviewers:
+        - harvester/dev
+      labels:
+        - dependencies
+

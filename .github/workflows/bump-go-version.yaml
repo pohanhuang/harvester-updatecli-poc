@@ -1,22 +1,14 @@
-name: Bump k8s stack Go dependencies
+name: Bump golang version
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "updatecli/values/bump-go-k8s-stack.yaml"
-  pull_request:
-    branches: [main]
-    paths:
-      - "updatecli/values/bump-go-k8s-stack.yaml"
   schedule:
-    # Run every Monday at 08:00 UTC (k8s stack bumps are less frequent)
-    - cron: "0 8 * * 1"
+    # Run every day at 08:00 UTC
+    - cron: "0 8 * * *"
 
 jobs:
   updatecli:
-    name: Bump k8s stack Go dependencies
+    name: Bump golang version
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,10 +23,12 @@ jobs:
       - name: Diff (dry-run on PR)
         if: github.ref != 'refs/heads/main'
         env:
+          # GITHUB_TOKEN is scoped to this repo only (harvester-updatecli-poc).
+          # HARVESTER_TOKEN is a PAT with Contents+PRs write access to pohanhuang/harvester.
           GITHUB_TOKEN: ${{ secrets.HARVESTER_TOKEN }}
         run: |
           updatecli diff \
-            --values updatecli/values/bump-go-k8s-stack.yaml \
+            --values updatecli/values/bump-go-libs.yaml \
             ghcr.io/updatecli/policies/golang/autodiscovery:0.12.0
 
       - name: Apply
@@ -42,6 +36,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.HARVESTER_TOKEN }}
         run: |
-          updatecli apply \
-            --values updatecli/values/bump-go-k8s-stack.yaml \
-            ghcr.io/updatecli/policies/golang/autodiscovery:0.12.0
+          updatecli compose apply -f updatecli-compose/golang-update.yaml -

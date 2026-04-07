@@ -9,8 +9,6 @@ labels:
 scm:
   enabled: true
   kind: github
-  env_token: GITHUB_TOKEN
-  user: "harvester-bot"
   email: "harvester-bot@users.noreply.github.com"
   owner: "pohanhuang"
   repository: "harvester"

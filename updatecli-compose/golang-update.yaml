@@ -1,0 +1,4 @@
+policies:
+  - name: Bump golang versions
+    config:
+      - ../updatecli/updatecli.d/golang
