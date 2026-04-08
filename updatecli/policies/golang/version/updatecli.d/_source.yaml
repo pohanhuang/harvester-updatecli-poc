@@ -1,0 +1,8 @@
+sources:
+  golang:
+    kind: golang
+    name: golang versions
+    spec:
+      versionfilter:
+        kind: semver
+        pattern: 1.25.x

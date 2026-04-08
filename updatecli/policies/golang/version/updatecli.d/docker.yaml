@@ -1,10 +1,3 @@
-name: Update golang versions
-pipelineid: "golang/versions"
-sources: 
-  golang:
-    kind: golang 
-    name: golang versions
-
 targets:
   dockerfile:
     name: 'update golang version in Dockerfile to {{ source "golang" }}'
