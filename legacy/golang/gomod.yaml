@@ -2,32 +2,26 @@ name: Update golang versions
 pipelineid: "golang/versions"
 sources: 
   golang:
-    kind: golang 
-    name: golang versions
+    name: "golang versions in go.mod"
+    kind: golang
 
 targets:
-  dockerfile:
-    name: 'update golang version in Dockerfile to {{ source "golang" }}'
-    kind: dockerfile
+  golang:
+    kind: golang/gomod
+    name: 'update go mod files to {{ source "golang" }}'
     scmid: github
     sourceid: golang
     spec:
-      file: "Dockerfile.dapper"
-      instruction:
-        keyword: "FROM"
-        matcher: "golang"
-    transformers:
-      - addsuffix: "-bookworm"
+      file: "go.mod"
 
 conditions:
-  docker:
-    kind: dockerimage
-    name: "check docker image tag"
-    sourceid: golang
+  golang:
+    name: "check if go.mod exist"
+    kind: file
+    scmid: github
+    disablesourceinput: true
     spec:
-      image: golang
-    transformers:
-      - addsuffix: "-bookworm"
+      file: "go.mod"
 
 scms:
   github:
@@ -47,10 +41,10 @@ scms:
 
 actions:
   github:
+    title: '{{ .actions.title }}'
     kind: github/pullrequest
-    scmid: github 
+    scmid: github
     spec:
-      title: '{{ .actions.title }}'
-      description: 'Update Golang version to {{ source "golang" }} in Dockerfile'
+      description: 'Update Golang version to {{ source "golang" }} in go.mod files'
       reviewers: {{ toYaml .actions.spec.reviewers | nindent 8 }}
       labels: {{ toYaml .actions.spec.labels | nindent 8 }}

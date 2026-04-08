@@ -1,0 +1,21 @@
+scm:
+  enabled: true
+  kind: github
+  # Token lookup: by default Updatecli reads the token from the named (using github token in PoC)
+  env_token: GITHUB_TOKEN
+  # Optional: override repository owner and name.
+  # If omitted, Updatecli falls back to GITHUB_REPOSITORY.
+  username: harvester-bot
+  user: harvester-bot
+  email: harvester-bot@users.noreply.github.com
+  branch: master
+  commitType: chore
+  commitScope: golang
+  footer: "Signed-off-by: harvester-bot <harvester-bot@users.noreply.github.com>"
+
+actions:
+  reviewers:
+    - harvester/dev
+  labels:
+    - golang
+    - dependency

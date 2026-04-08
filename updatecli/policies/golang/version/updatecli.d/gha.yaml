@@ -33,30 +33,3 @@ conditions:
         keyonly: true
     scmid: github
     sourceid: golang
-
-scms:
-  github:
-    kind: githubsearch
-    spec:
-      email: "{{ .github.email }}"
-      user: "{{ .github.user }}" 
-      limit: 0
-      search: "{{ .scm.search}}"
-      branch: "{{ .scm.branch }}"
-      commitmessage:
-        type: "{{ .scm.commitType }}"
-        scope: "{{ .scm.commitScope }}"
-        title: "update Golang version"
-        footers: "{{ .github.footer }}"
-        hidecredit: true   
-
-actions:
-  github:
-    kind: github/pullrequest
-    scmid: github 
-    spec:
-      title: '{{ .actions.title }}'
-      description: 'Update Golang version to {{ source "golang" }} in GitHub Action'
-      reviewers: {{ toYaml .actions.spec.reviewers | nindent 8 }}
-      labels: {{ toYaml .actions.spec.labels | nindent 8 }}
-

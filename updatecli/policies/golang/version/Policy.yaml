@@ -1,0 +1,20 @@
+authors:
+  - Pohan Huang
+
+url: https://github.com/pohanhuang/harvester-updatecli-poc/tree/main/updatecli/policies/golang/version
+
+documentation: https://github.com/pohanhuang/harvester-updatecli-poc/tree/main/updatecli/policies/golang/version/README.md
+
+source: https://github.com/pohanhuang/harvester-updatecli-poc
+
+version: 0.1.0
+
+vendor: SUSE
+
+licenses:
+  - NOASSERTION
+
+description: |
+  Reusable Updatecli policy for bumping the Go version used by Harvester.
+  This policy can update Dockerfile-based Go images, go.mod, and GitHub Actions
+  workflows that use actions/setup-go.

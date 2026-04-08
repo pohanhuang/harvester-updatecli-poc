@@ -1,0 +1,38 @@
+# {{ $GitHubUser := env "GITHUB_ACTOR" }}
+# {{ $GitHubUsername := env "GITHUB_ACTOR" }}
+# {{ $GitHubTokenEnv := default "GITHUB_TOKEN" .scm.env_token }}
+# {{ $GitHubPAT := env $GitHubTokenEnv }}
+# {{ $GitHubRepositoryList := env "GITHUB_REPOSITORY" | split "/" }}
+actions:
+  github:
+    kind: "github/pullrequest"
+    title: 'chore(golang): bump Go version to {{ source "golang" }}'
+    scmid: "github"
+    spec:
+      mergemethod: "squash"
+      # {{ if .actions.reviewers }}
+      reviewers:
+{{ toYaml .actions.reviewers | nindent 8 }}
+      # {{ end }}
+      # {{ if .actions.labels }}
+      labels:
+{{ toYaml .actions.labels | nindent 8 }}
+      # {{ end }}
+
+scms:
+  github:
+    kind: "github"
+    spec:
+      user: '{{ default $GitHubUser .scm.user }}'
+      username: '{{ default $GitHubUsername .scm.username }}'
+      owner: '{{ default $GitHubRepositoryList._0 .scm.owner }}'
+      repository: '{{ default $GitHubRepositoryList._1 .scm.repository }}'
+      token: '{{ default $GitHubPAT .scm.token }}'
+      email: '{{ .scm.email }}'
+      branch: '{{ default (env "GITHUB_REF_NAME") .scm.branch }}'
+      commitmessage:
+        type: "{{ .scm.commitType }}"
+        scope: "{{ .scm.commitScope }}"
+        title: "update Golang version"
+        footers: "{{ .scm.footer }}"
+        hidecredit: true         

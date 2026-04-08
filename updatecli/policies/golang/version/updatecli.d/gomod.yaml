@@ -1,0 +1,24 @@
+name: Update golang versions
+pipelineid: "golang/versions"
+sources: 
+  golang:
+    name: "golang versions in go.mod"
+    kind: golang
+
+targets:
+  golang:
+    kind: golang/gomod
+    name: 'update go mod files to {{ source "golang" }}'
+    scmid: github
+    sourceid: golang
+    spec:
+      file: "go.mod"
+
+conditions:
+  golang:
+    name: "check if go.mod exist"
+    kind: file
+    scmid: github
+    disablesourceinput: true
+    spec:
+      file: "go.mod"

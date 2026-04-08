@@ -1,0 +1,61 @@
+name: Update golang versions
+pipelineid: "golang/versions"
+sources: 
+  golang:
+    name: golang versions in github action
+    kind: golang
+
+targets:
+  github-action:
+    name: 'deps(github-action): Bump Golang version to {{ source "golang" }}'
+    kind: yaml
+    spec:
+        engine: yamlpath    
+        files:
+          - '.github/workflows/*.yaml'
+          - '.github/workflows/*.yml'         
+        key: '$.jobs.build.steps[?(@.uses =~ /^actions\/setup-go/)].with.go-version'
+        searchpattern: true
+    scmid: github
+    sourceid: golang
+
+conditions:
+  github-action:
+    name: 'checking if file exist'
+    kind: yaml
+    spec:
+        engine: yamlpath    
+        files:
+          - '.github/workflows/*.yaml'
+          - '.github/workflows/*.yml'
+        key: '$.jobs.build.steps[?(@.uses =~ /^actions\/setup-go/)].with.go-version'
+        searchpattern: true
+        keyonly: true
+    scmid: github
+    sourceid: golang
+
+scms:
+  github:
+    kind: githubsearch
+    spec:
+      email: "{{ .github.email }}"
+      user: "{{ .github.user }}" 
+      limit: 0
+      search: "{{ .scm.search}}"
+      branch: "{{ .scm.branch }}"
+      commitmessage:
+        type: "{{ .scm.commitType }}"
+        scope: "{{ .scm.commitScope }}"
+        title: "update Golang version"
+        footers: "{{ .github.footer }}"
+        hidecredit: true   
+
+actions:
+  github:
+    title: '{{ .actions.title }}'
+    kind: github/pullrequest
+    scmid: github 
+    spec:
+      description: 'Update Golang version to {{ source "golang" }} in GitHub Action'
+      reviewers: {{ toYaml .actions.spec.reviewers | nindent 8 }}
+      labels: {{ toYaml .actions.spec.labels | nindent 8 }}
