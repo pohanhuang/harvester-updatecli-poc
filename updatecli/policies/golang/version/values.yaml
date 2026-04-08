@@ -2,19 +2,13 @@ name: 'deps: Bump Golang version'
 pipelineid: golang/version
 
 scm:
-  enabled: true
-  kind: githubsearch
-  # Token lookup: by default Updatecli reads the token from the named (using github token in PoC)
   env_token: UPDATECLI_GITHUB_TOKEN
-  search: 'user:pohanhuang harvester fork:true -repo:pohanhuang/harvester-updatecli-poc'
   username: harvester-bot
   user: harvester-bot
   email: harvester-bot@users.noreply.github.com
-  branch: '^main$|^master$|^v1\.8\.0$'
   commitType: chore
   commitScope: golang
   footer: "Signed-off-by: harvester-bot <harvester-bot@users.noreply.github.com>"
-  limit: 0
 
 actions:
   reviewers:

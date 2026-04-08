@@ -9,8 +9,10 @@ targets:
       instruction:
         keyword: "FROM"
         matcher: "golang"
+    # {{ if .docker.suffix }}
     transformers:
-      - addsuffix: "-bookworm"
+      - addsuffix: '{{ .docker.suffix }}'
+    # {{ end }}
 
 conditions:
   docker:
@@ -19,5 +21,7 @@ conditions:
     sourceid: golang
     spec:
       image: golang
+    # {{ if .docker.suffix }}
     transformers:
-      - addsuffix: "-bookworm"
+      - addsuffix: '{{ .docker.suffix }}'
+    # {{ end }}

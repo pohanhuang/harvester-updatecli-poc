@@ -2,7 +2,9 @@ sources:
   golang:
     kind: golang
     name: golang versions
+    # {{ if .source.pattern }}
     spec:
       versionfilter:
         kind: semver
-        pattern: 1.25.x
+        pattern: '{{ .source.pattern }}'
+    # {{ end }}
