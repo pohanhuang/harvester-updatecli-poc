@@ -16,3 +16,6 @@ actions:
   labels:
     - golang
     - dependency
+
+docker:
+  matcher: "registry.suse.com/bci/golang"

@@ -8,7 +8,7 @@ targets:
       file: "Dockerfile.dapper"
       instruction:
         keyword: "FROM"
-        matcher: "golang"
+        matcher: {{ .docker.matcher }}
     # {{ if .docker.suffix }}
     transformers:
       - addsuffix: '{{ .docker.suffix }}'
